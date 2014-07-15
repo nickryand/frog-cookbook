@@ -1,5 +1,8 @@
 frog Cookbook
 =============
+.. image:: https://travis-ci.org/nickryand/frog-cookbook.png?branch=master
+   :target: https://travis-ci.org/nickryand/frog-cookbook
+   :alt: Build Status
 
 Installs and configures the open source Frog Media Server.
 
