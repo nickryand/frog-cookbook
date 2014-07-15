@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+exec chpst -u <%= node['frog']['user'] %>:<%= node['frog']['group'] -%> \
+     -- <%= node['frog']['rootdir'] -%>/env/bin/gunicorn -c <%= node['frog']['rootdir'] %>/webapp/gunicorn_frog.py --chdir <%= node['frog']['rootdir'] %>/webapp webapp.wsgi:application

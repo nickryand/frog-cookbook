@@ -1,0 +1,52 @@
+---
+driver:
+  name: vagrant
+  # network:
+  # - ["forwarded_port", {guest: 80, host: 8080}]
+  # - ["forwarded_port", {guest: 8000, host: 8000}]
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+    run_list:
+      - recipe[apt]
+  - name: ubuntu-12.04
+    run_list:
+      - recipe[apt]
+  - name: centos-6.4
+
+suites:
+  - name: server
+    run_list:
+      - recipe[frog::database]
+      - recipe[frog::server]
+    attributes:
+      mysql:
+        server_root_password: frog
+      frog:
+        db:
+          password: frog
+          install_dbms: true
+        debug: True
+        package_name: git+https://github.com/theiviaxx/Frog.git
+  - name: database
+    run_list:
+      - recipe[frog::database]
+    attributes:
+      mysql:
+        server_root_password: frog
+      frog:
+        db:
+          install_dbms: true
+          password: frog
+  - name: nginx
+    run_list:
+      - recipe[frog::nginx]
+    attributes:
+      frog:
+        settings:
+          url: 'http://127.0.0.1:8000'
+        nginx:
+          server_name: 'localhost'
