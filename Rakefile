@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 require 'bundler/setup'
+require 'emeril/rake'
 
 namespace :style do
   require 'rubocop/rake_task'

@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'berkshelf'
+gem 'emeril'
 
 group :style do
   gem 'rubocop', '~> 0.24'
