@@ -4,7 +4,7 @@ maintainer_email 'nickryand@gmail.com'
 license 'MIT'
 description 'Installs/Configures frog-cookbook'
 long_description 'Installs/Configures frog-cookbook'
-version '0.1.0'
+version '1.0.0'
 
 depends 'database', '~> 2.2.0'
 depends 'python', '~> 1.4.6'
