@@ -2,9 +2,9 @@ name 'frog'
 maintainer 'Nick Downs'
 maintainer_email 'nickryand@gmail.com'
 license 'MIT'
-description 'Installs/Configures frog-cookbook'
-long_description 'Installs/Configures frog-cookbook'
-version '1.0.0'
+description 'Installs and configures the Frog Media Server'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version '1.0.1'
 
 depends 'database', '~> 2.2.0'
 depends 'python', '~> 1.4.6'
