@@ -1,9 +1,9 @@
 frog Cookbook
 =============
-.. image:: https://travis-ci.org/nickryand/frog-cookbook.png?branch=master
-   :target: https://travis-ci.org/nickryand/frog-cookbook
-   :alt: Build Status
+[![Build Status](http://img.shields.io/travis/nickryand/frog-cookbook.svg)][travis]
 
+
+[travis]: http://travis-ci.org/nickryand/frog-cookbook
 Installs and configures the open source Frog Media Server.
 
 Frog Media Server is an open source project designed to make sharing and maintaining large collections of images and video simple. It exposes an API that allows for easy integration with other applications. The built-in web frontend allows you to manage your media from any platform that supports JavaScript and HTML5.
