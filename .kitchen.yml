@@ -1,9 +1,9 @@
 ---
 driver:
   name: vagrant
-  # network:
-  # - ["forwarded_port", {guest: 80, host: 8080}]
-  # - ["forwarded_port", {guest: 8000, host: 8000}]
+  network:
+  - ["forwarded_port", {guest: 80, host: 8080}]
+  - ["forwarded_port", {guest: 8000, host: 8000}]
 
 provisioner:
   name: chef_zero
@@ -31,7 +31,10 @@ suites:
           password: frog
           install_dbms: true
         debug: True
-        package_name: git+https://github.com/theiviaxx/Frog.git
+        settings:
+          url: 'http://localhost:8000/'
+          media_url: 'http://localhost:8000/media/'
+          static_url: 'http://localhost:8000/static/'
   - name: database
     run_list:
       - recipe[frog::database]
@@ -49,5 +52,5 @@ suites:
       frog:
         settings:
           url: 'http://127.0.0.1:8000'
-        nginx:
-          server_name: 'localhost'
+      nginx:
+        server_name: 'localhost'

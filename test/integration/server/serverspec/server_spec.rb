@@ -90,8 +90,6 @@ describe file('/srv/frog/media') do
   it { should be_mode 755 }
 end
 
-hostname = `hostname -f`.strip
-
 describe file('/srv/frog/webapp/webapp/settings.py') do
   it { should be_owned_by 'frog' }
   it { should be_grouped_into 'frog' }
@@ -103,11 +101,11 @@ describe file('/srv/frog/webapp/webapp/settings.py') do
   its(:content) { should match(/'HOST': 'localhost'/) }
   its(:content) { should match(/'PORT': [0-9]*/) }
   its(:content) { should match(%r{FROG_FFMPEG = '/usr/bin/ffmpeg'}) }
-  its(:content) { should match(%r{FROG_SITE_URL = 'http://#{hostname}:8000'}) }
+  its(:content) { should match(%r{FROG_SITE_URL = 'http://localhost:8000/'}) }
   its(:content) { should match(%r{MEDIA_ROOT = '/srv/frog/media'}) }
-  its(:content) { should match(%r{MEDIA_URL = 'http://#{hostname}:8000/media/'}) }
+  its(:content) { should match(%r{MEDIA_URL = 'http://localhost:8000/media/'}) }
   its(:content) { should match(%r{STATIC_ROOT = '/srv/frog/static'}) }
-  its(:content) { should match(%r{STATIC_URL = 'http://#{hostname}:8000/static/'}) }
+  its(:content) { should match(%r{STATIC_URL = 'http://localhost:8000/static/'}) }
   its(:content) { should match(/SESSION_COOKIE_AGE = [0-9]+/) }
 end
 
