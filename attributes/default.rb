@@ -68,19 +68,6 @@ default['frog']['gunicorn']['workers'] = 3
 default['frog']['gunicorn']['log_dir'] = '/var/log/gunicorn'
 
 #
-# Port number for Nginx to listen for incoming requests
-#
-default['frog']['nginx']['listen_port'] = 80
-
-#
-# Nginx server name directive that is used to select the proper
-# server block.
-#
-# http://nginx.org/en/docs/http/server_names.html
-#
-default['frog']['nginx']['server_name'] = node['fqdn']
-
-#
 # The initial admin user for the Frog admin portal
 #
 default['frog']['admin']['user'] = 'root'

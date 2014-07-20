@@ -1,5 +1,4 @@
 require 'serverspec'
-require 'socket'
 
 include Serverspec::Helper::Exec
 include Serverspec::Helper::DetectOS
@@ -30,5 +29,9 @@ describe file('/etc/nginx/sites-enabled/frog') do
   its(:content) { should match(%r{access_log.*/var/log/nginx/frog-access.log}) }
   its(:content) { should match(%r{alias /srv/frog/media;}) }
   its(:content) { should match(%r{alias /srv/frog/static;}) }
-  its(:content) { should match(%r{proxy_pass http://127.0.0.1:8000}) }
+  its(:content) { should match(%r{proxy_pass http://localhost:8000}) }
+end
+
+describe command('ls /etc/nginx/sites-enabled/default') do
+  its(:stdout) { should match(/No such file or directory/) }
 end

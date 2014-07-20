@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: frog
-# Recipe:: nginx
+# Cookbook Name:: frog-cookbook
+# Attributes:: default
 #
 # Copyright (C) 2014 Nick Downs
 #
@@ -23,31 +23,23 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-include_recipe 'nginx::default'
+#
 
-template node['nginx']['dir'] + '/sites-available/frog' do
-  source 'frog.nginx.erb'
-  owner 'root'
-  group 'root'
-  mode 00644
-  variables(
-    :listen_port => node['frog']['nginx']['listen_port'],
-    :server_name => node['frog']['nginx']['server_name'],
-    :access_log => node['nginx']['log_dir'] + '/frog-access.log',
-    :media_root => node['frog']['settings']['media_root'],
-    :static_root => node['frog']['settings']['static_root'],
-    :url => node['frog']['settings']['url']
-  )
-  notifies :reload, 'service[nginx]', :delayed
-end
+#
+# Port number for Nginx to listen for incoming requests
+#
+default['frog']['nginx']['listen_port'] = 80
 
-link node['nginx']['dir'] + '/sites-enabled/frog' do
-  to node['nginx']['dir'] + '/sites-available/frog'
-  notifies :reload, 'service[nginx]', :delayed
-end
+#
+# Nginx server name directive that is used to select the proper
+# server block.
+#
+# http://nginx.org/en/docs/http/server_names.html
+#
+default['frog']['nginx']['server_name'] = node['fqdn']
 
-# link node['nginx']['dir'] + '/sites-enabled/default' do
-#   action :delete
-#   only_if { ::File.exists?(node['nginx']['dir'] + '/sites-enabled/default') }
-#   notifies :reload, 'service[nginx]', :delayed
-# end
+#
+# Disable/Enable the default nginx default site
+#
+include_attribute 'nginx'
+default['nginx']['default_site_enabled'] = false
