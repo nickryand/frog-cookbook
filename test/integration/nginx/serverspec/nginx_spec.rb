@@ -33,5 +33,5 @@ describe file('/etc/nginx/sites-enabled/frog') do
 end
 
 describe command('ls /etc/nginx/sites-enabled/default') do
-  its(:stdout) { should match /No such file or directory/ }
+  its(:stdout) { should match(/No such file or directory/) }
 end

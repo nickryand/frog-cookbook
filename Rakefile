@@ -11,7 +11,7 @@ namespace :style do
   require 'foodcritic'
   desc 'Run foodcritic for Chef style checks'
   FoodCritic::Rake::LintTask.new(:chef) do |t|
-    t.options = { :chef_version => '11.4' }
+    t.options = { :chef_version => '11.6.0' }
   end
 end
 
