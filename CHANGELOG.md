@@ -1,3 +1,11 @@
+## 1.0.1 /2014-08-19
+
+Seperated out nginx frog attributes into it's own file.
+
+* Disabled the nginx default site
+* Increased Nginx proxy timeouts
+* Added an Nginx reload notification to catch config file updates
+
 ## 1.0.0 / 2014-07-14
 
 Initial release ([@nickryand][])

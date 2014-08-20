@@ -45,9 +45,3 @@ link node['nginx']['dir'] + '/sites-enabled/frog' do
   to node['nginx']['dir'] + '/sites-available/frog'
   notifies :reload, 'service[nginx]', :delayed
 end
-
-# link node['nginx']['dir'] + '/sites-enabled/default' do
-#   action :delete
-#   only_if { ::File.exists?(node['nginx']['dir'] + '/sites-enabled/default') }
-#   notifies :reload, 'service[nginx]', :delayed
-# end
