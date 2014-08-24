@@ -1,5 +1,14 @@
 ## 1.0.2 /2014-08-23
 
+Updates to allow running the database on another server. ([@nickryand[])
+
+* Added libmysqlclient packages for each supported OS to the server
+  recipe. This allows MySQL-python to properly build when the frog
+  database is running on a remote server.
+* Reverse proxy fixes which allow you to properly setup Frog to run
+  the entire application behind a reverse proxy. Previously it was not
+  easy to configure Frog to hand out URL's that pointed to the proxy
+  endpoint. That has been resolved.
 
 ## 1.0.1 /2014-08-19
 
