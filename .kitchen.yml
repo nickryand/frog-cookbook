@@ -33,9 +33,10 @@ suites:
           install_dbms: true
         debug: True
         settings:
+          port: 80
           url: 'http://localhost'
-          media_url: 'http://localhost/media/'
-          static_url: 'http://localhost/static/'
+          media_path: '/media/'
+          static_path: '/static/'
         nginx:
           server_name: 'localhost'
   - name: server

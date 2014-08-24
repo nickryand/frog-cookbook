@@ -1,7 +1,6 @@
-require_relative '../spec_helper'
+;require_relative '../spec_helper'
 
 describe 'frog::server' do
-
   let(:frog_group)       { 'testgroup' }
   let(:frog_user)        { 'testuser' }
   let(:frog_home)        { '/opt/frog' }
@@ -203,62 +202,70 @@ describe 'frog::server' do
       .with_group(frog_group)
       .with_mode(0600)
       .with_variables(
-        :db_adapter => 'mysql',
-        :db_name => 'frog',
-        :db_user => 'frog',
-        :db_password => 'thisshouldbechanged',
-        :db_host => 'localhost',
-        :db_port => 3306,
-        :allowed_hosts => ['*'],
-        :ffmpeg_exe => '/usr/bin/ffmpeg',
-        :url => "#{frog_url}:8000",
-        :media_path => "#{frog_url}:8000#{frog_media_path}",
-        :media_root => frog_media,
-        :static_path => "#{frog_url}:8000#{frog_static_path}/",
-        :static_root => frog_static,
-        :session_age => 86400,
-        :secret_key => chef_run.node['frog']['settings']['secret_key'],
-        :debug => 'False'
+      :db_adapter => 'mysql',
+      :db_name => 'frog',
+      :db_user => 'frog',
+      :db_password => 'thisshouldbechanged',
+      :db_host => 'localhost',
+      :db_port => 3306,
+      :allowed_hosts => ['*'],
+      :ffmpeg_exe => '/usr/bin/ffmpeg',
+      :url => "#{frog_url}:8000",
+      :media_path => "#{frog_url}:8000#{frog_media_path}",
+      :media_root => frog_media,
+      :static_path => "#{frog_url}:8000#{frog_static_path}/",
+      :static_root => frog_static,
+      :session_age => 86400,
+      :secret_key => chef_run.node['frog']['settings']['secret_key'],
+      :debug => 'False'
       )
   end
 
-  context "with port 80 defined" do
-    cached(:chef_run) do
-      ChefSpec::Runner.new do |node|
-        node.set['frog']['settings']['port'] = 80
-
-        # Workaround until https://github.com/hw-cookbooks/runit/pull/57 is merged.
-        node.set[:runit][:sv_bin] = '/usr/bin/sv'
-      end.converge(described_recipe)
-
-      it 'should generate the proper frog, media, and static url for settings.py' do
-        expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
-          .with_variables(
-          :url => frog_url,
-          :media_path => "#{frog_url}#{frog_media_path}",
-          :static_path => "#{frog_url}#{frog_static_path}/"
-          )
-      end
-    end
+  it 'should generate the proper frog, media, and static url for settings.py' do
+    chef_run.node.set['frog']['settings']['port'] = 80
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
+      .with_variables(
+      :db_adapter => 'mysql',
+      :db_name => 'frog',
+      :db_user => 'frog',
+      :db_password => 'thisshouldbechanged',
+      :db_host => 'localhost',
+      :db_port => 3306,
+      :allowed_hosts => ['*'],
+      :ffmpeg_exe => '/usr/bin/ffmpeg',
+      :media_root => frog_media,
+      :static_root => frog_static,
+      :session_age => 86400,
+      :secret_key => chef_run.node['frog']['settings']['secret_key'],
+      :debug => 'False',
+      :url => frog_url,
+      :media_path => "#{frog_url}#{frog_media_path}",
+      :static_path => "#{frog_url}#{frog_static_path}/"
+      )
   end
 
-  context "with port 8080 defined" do
-    cached(:chef_run) do
-      ChefSpec::Runner.new do |node|
-        node.set['frog']['settings']['port'] = frog_port
-
-        # Workaround until https://github.com/hw-cookbooks/runit/pull/57 is merged.
-        node.set[:runit][:sv_bin] = '/usr/bin/sv'
-      end.converge(described_recipe)
-
-      it 'should generate the proper frog, media, and static url for settings.py' do
-        expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
-          .with_variables(
-          :url => "#{frog_url}:8080",
-          :media_path => "#{frog_url}:8080#{frog_media_path}",
-          :static_path => "#{frog_url}:8080#{frog_static_path}/"
-          )
-      end
-    end
+  it 'should generate the proper frog, media, and static url for settings.py with a port of 8080' do
+    chef_run.node.set['frog']['settings']['port'] = 8080
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
+      .with_variables(
+      :db_adapter => 'mysql',
+      :db_name => 'frog',
+      :db_user => 'frog',
+      :db_password => 'thisshouldbechanged',
+      :db_host => 'localhost',
+      :db_port => 3306,
+      :allowed_hosts => ['*'],
+      :ffmpeg_exe => '/usr/bin/ffmpeg',
+      :media_root => frog_media,
+      :static_root => frog_static,
+      :session_age => 86400,
+      :secret_key => chef_run.node['frog']['settings']['secret_key'],
+      :debug => 'False',
+      :url => "#{frog_url}:8080",
+      :media_path => "#{frog_url}:8080#{frog_media_path}",
+      :static_path => "#{frog_url}:8080#{frog_static_path}/"
+      )
   end
 end

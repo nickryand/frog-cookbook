@@ -1,11 +1,11 @@
 require_relative '../spec_helper'
 
 describe 'frog::nginx' do
-  let(:nginx_home)   { '/srv/nginx' }
+  let(:nginx_home)   { '/etc/nginx' }
   let(:frog_site)    { "#{nginx_home}/sites-available/frog" }
   let(:server_name)  { 'test.local' }
   let(:nginx_log)    { '/var/log/nginx' }
-  let(:frog_url)     { 'http://localhost:8000' }
+  let(:frog_url)     { 'http://localhost' }
 
   cached(:chef_run) do
     ChefSpec::Runner.new do |node|
@@ -35,12 +35,11 @@ describe 'frog::nginx' do
         :access_log => '/var/log/nginx/frog-access.log',
         :media_root => '/srv/frog/media',
         :static_root => '/srv/frog/static',
-        :url => frog_url
+        :url => "#{frog_url}:8000"
       )
   end
 
   it 'enable the frog site by linking the config to sites-enabled' do
     expect(chef_run).to create_link(nginx_home + '/sites-enabled/frog')
   end
-
 end

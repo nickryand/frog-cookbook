@@ -135,7 +135,7 @@ template "#{node['frog']['rootdir']}/webapp/webapp/settings.py" do
   owner node['frog']['user']
   group node['frog']['group']
   mode 0600
-  variables(
+  variables lazy{{
     :db_adapter => node['frog']['db']['adapter'],
     :db_name => node['frog']['db']['name'],
     :db_user => node['frog']['db']['user'],
@@ -160,7 +160,7 @@ template "#{node['frog']['rootdir']}/webapp/webapp/settings.py" do
     :session_age => node['frog']['settings']['session_age'],
     :secret_key => node['frog']['settings']['secret_key'],
     :debug => node['frog']['settings']['debug']
-  )
+  }}
   notifies :restart, 'runit_service[gunicorn]', :delayed
 end
 
