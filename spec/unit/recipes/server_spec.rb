@@ -13,7 +13,6 @@ describe 'frog::server' do
   let(:frog_media)       { "#{frog_home}/media" }
   let(:frog_static)      { "#{frog_home}/static" }
   let(:frog_url)         { 'http://127.0.0.1' }
-  let(:frog_port)        { 8000 }
   let(:frog_media_path)   { "/media/" }
   let(:frog_static_path)   { "/static" }
 
@@ -212,10 +211,10 @@ describe 'frog::server' do
         :db_port => 3306,
         :allowed_hosts => ['*'],
         :ffmpeg_exe => '/usr/bin/ffmpeg',
-        :url => frog_url,
-        :media_path => frog_media_path,
+        :url => "#{frog_url}:8000",
+        :media_path => "#{frog_url}:8000#{frog_media_path}",
         :media_root => frog_media,
-        :static_path => frog_static_path + '/',
+        :static_path => "#{frog_url}:8000#{frog_static_path}/",
         :static_root => frog_static,
         :session_age => 86400,
         :secret_key => chef_run.node['frog']['settings']['secret_key'],
@@ -223,7 +222,27 @@ describe 'frog::server' do
       )
   end
 
-  context "with a port defined" do
+  context "with port 80 defined" do
+    cached(:chef_run) do
+      ChefSpec::Runner.new do |node|
+        node.set['frog']['settings']['port'] = 80
+
+        # Workaround until https://github.com/hw-cookbooks/runit/pull/57 is merged.
+        node.set[:runit][:sv_bin] = '/usr/bin/sv'
+      end.converge(described_recipe)
+
+      it 'should generate the proper frog, media, and static url for settings.py' do
+        expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
+          .with_variables(
+          :url => frog_url,
+          :media_path => "#{frog_url}#{frog_media_path}",
+          :static_path => "#{frog_url}#{frog_static_path}/"
+          )
+      end
+    end
+  end
+
+  context "with port 8080 defined" do
     cached(:chef_run) do
       ChefSpec::Runner.new do |node|
         node.set['frog']['settings']['port'] = frog_port
@@ -235,9 +254,9 @@ describe 'frog::server' do
       it 'should generate the proper frog, media, and static url for settings.py' do
         expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
           .with_variables(
-          :url => "#{frog_url}:#{frog_port}",
-          :media_url => "#{frog_url}:#{frog_port}/#{frog_media_path}",
-          :static_url => "#{frog_url}:#{frog_port}/#{frog_static_path}/"
+          :url => "#{frog_url}:8080",
+          :media_path => "#{frog_url}:8080#{frog_media_path}",
+          :static_path => "#{frog_url}:8080#{frog_static_path}/"
           )
       end
     end
