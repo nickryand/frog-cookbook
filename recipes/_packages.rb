@@ -24,6 +24,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 include_recipe 'chef-sugar::default'
+include_recipe 'build-essential'
 
 #
 # Arch specific packages
@@ -56,6 +57,8 @@ if rhel?
   package 'libjpeg-turbo-devel'
   package 'libtiff-devel'
   package 'libpng-devel'
+  package 'mysql'
+  package 'mysql-devel'
 elsif debian?
   apt_repository 'ffmpeg' do
     uri node['frog']['apt']['ffmpeg']['url']
@@ -70,6 +73,7 @@ elsif debian?
   package 'libjpeg-dev'
   package 'libtiff4-dev'
   package 'libpng12-dev'
+  package 'libmysqlclient-dev'
 else
   fail "`#{node['platform_family']}' is not supported!"
 end

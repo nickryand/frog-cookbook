@@ -1,9 +1,9 @@
 ---
 driver:
   name: vagrant
-  # network:
-  # - ["forwarded_port", {guest: 80, host: 8080}]
-  # - ["forwarded_port", {guest: 8000, host: 8000}]
+  network:
+  - ["forwarded_port", {guest: 8080, host: 8080}]
+  - ["forwarded_port", {guest: 8000, host: 8000}]
 
 provisioner:
   name: chef_zero
@@ -33,9 +33,9 @@ suites:
           install_dbms: true
         debug: True
         settings:
-          url: 'http://localhost:8000/'
-          media_url: 'http://localhost:8000/media/'
-          static_url: 'http://localhost:8000/static/'
+          url: 'http://localhost'
+          media_url: 'http://localhost/media/'
+          static_url: 'http://localhost/static/'
         nginx:
           server_name: 'localhost'
   - name: server
@@ -51,9 +51,10 @@ suites:
           install_dbms: true
         debug: True
         settings:
-          url: 'http://localhost:8000/'
-          media_url: 'http://localhost:8000/media/'
-          static_url: 'http://localhost:8000/static/'
+          url: 'http://localhost'
+          port: 8000
+          media_path: '/media/'
+          static_path: '/static/'
   - name: database
     run_list:
       - recipe[frog::database]
@@ -70,6 +71,15 @@ suites:
     attributes:
       frog:
         settings:
-          url: 'http://localhost:8000'
+          url: 'http://localhost'
         nginx:
           server_name: 'localhost'
+  - name: server_rds_db
+    run_list:
+      - recipe[frog::server]
+    attributes:
+      frog:
+        db:
+          password: frogadmin
+          host: <%= ENV['AWS_RDS_HOST'] %>
+    excludes: ["ubuntu-14.04", "ubuntu-12.04", "centos-6.4"]

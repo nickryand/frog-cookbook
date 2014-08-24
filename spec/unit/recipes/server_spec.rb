@@ -12,9 +12,9 @@ describe 'frog::server' do
   let(:gunicorn_workers) { 2 }
   let(:frog_media)       { "#{frog_home}/media" }
   let(:frog_static)      { "#{frog_home}/static" }
-  let(:frog_url)         { 'http://127.0.0.1:8000' }
-  let(:frog_media_url)   { "#{frog_url}/media" }
-  let(:frog_static_url)   { "#{frog_url}/static" }
+  let(:frog_url)         { 'http://127.0.0.1' }
+  let(:frog_media_path)   { "/media/" }
+  let(:frog_static_path)   { "/static" }
 
   cached(:chef_run) do
     ChefSpec::Runner.new do |node|
@@ -28,8 +28,8 @@ describe 'frog::server' do
       node.set['frog']['settings']['media_root'] = frog_media
       node.set['frog']['settings']['static_root'] = frog_static
       node.set['frog']['settings']['url'] = frog_url
-      node.set['frog']['settings']['media_url'] = frog_media_url
-      node.set['frog']['settings']['static_url'] = frog_static_url
+      node.set['frog']['settings']['media_path'] = frog_media_path
+      node.set['frog']['settings']['static_path'] = frog_static_path
 
       # Workaround until https://github.com/hw-cookbooks/runit/pull/57 is merged.
       node.set[:runit][:sv_bin] = '/usr/bin/sv'
@@ -150,31 +150,6 @@ describe 'frog::server' do
     expect(chef_run.node['frog']['settings']['secret_key']).to_not be_nil
   end
 
-  it 'should generate the proper python settings.py file' do
-    expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
-      .with_owner(frog_user)
-      .with_group(frog_group)
-      .with_mode(0600)
-      .with_variables(
-        :db_adapter => 'mysql',
-        :db_name => 'frog',
-        :db_user => 'frog',
-        :db_password => 'thisshouldbechanged',
-        :db_host => 'localhost',
-        :db_port => 3306,
-        :allowed_hosts => ['*'],
-        :ffmpeg_exe => '/usr/bin/ffmpeg',
-        :url => frog_url,
-        :media_url => frog_media_url,
-        :media_root => frog_media,
-        :static_url => frog_static_url,
-        :static_root => frog_static,
-        :session_age => 86400,
-        :secret_key => chef_run.node['frog']['settings']['secret_key'],
-        :debug => 'False'
-      )
-  end
-
   it 'should notify restart on the gunicorn runit service if settings.py is updated' do
     resource = chef_run.template("#{frog_home}/webapp/webapp/settings.py")
     expect(resource).to notify('runit_service[gunicorn]').to(:restart).delayed
@@ -220,5 +195,70 @@ describe 'frog::server' do
   it 'enables the gunicorn runit service and enables the default_logger' do
     expect(chef_run).to enable_runit_service('gunicorn')
       .with_default_logger(true)
+  end
+
+  it 'should generate the proper python settings.py file' do
+    expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
+      .with_owner(frog_user)
+      .with_group(frog_group)
+      .with_mode(0600)
+      .with_variables(
+        :db_adapter => 'mysql',
+        :db_name => 'frog',
+        :db_user => 'frog',
+        :db_password => 'thisshouldbechanged',
+        :db_host => 'localhost',
+        :db_port => 3306,
+        :allowed_hosts => ['*'],
+        :ffmpeg_exe => '/usr/bin/ffmpeg',
+        :url => "#{frog_url}:8000",
+        :media_path => "#{frog_url}:8000#{frog_media_path}",
+        :media_root => frog_media,
+        :static_path => "#{frog_url}:8000#{frog_static_path}/",
+        :static_root => frog_static,
+        :session_age => 86400,
+        :secret_key => chef_run.node['frog']['settings']['secret_key'],
+        :debug => 'False'
+      )
+  end
+
+  context "with port 80 defined" do
+    cached(:chef_run) do
+      ChefSpec::Runner.new do |node|
+        node.set['frog']['settings']['port'] = 80
+
+        # Workaround until https://github.com/hw-cookbooks/runit/pull/57 is merged.
+        node.set[:runit][:sv_bin] = '/usr/bin/sv'
+      end.converge(described_recipe)
+
+      it 'should generate the proper frog, media, and static url for settings.py' do
+        expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
+          .with_variables(
+          :url => frog_url,
+          :media_path => "#{frog_url}#{frog_media_path}",
+          :static_path => "#{frog_url}#{frog_static_path}/"
+          )
+      end
+    end
+  end
+
+  context "with port 8080 defined" do
+    cached(:chef_run) do
+      ChefSpec::Runner.new do |node|
+        node.set['frog']['settings']['port'] = frog_port
+
+        # Workaround until https://github.com/hw-cookbooks/runit/pull/57 is merged.
+        node.set[:runit][:sv_bin] = '/usr/bin/sv'
+      end.converge(described_recipe)
+
+      it 'should generate the proper frog, media, and static url for settings.py' do
+        expect(chef_run).to create_template("#{frog_home}/webapp/webapp/settings.py")
+          .with_variables(
+          :url => "#{frog_url}:8080",
+          :media_path => "#{frog_url}:8080#{frog_media_path}",
+          :static_path => "#{frog_url}:8080#{frog_static_path}/"
+          )
+      end
+    end
   end
 end

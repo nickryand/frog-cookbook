@@ -9,10 +9,10 @@ ROOT_URLCONF = "webapp.urls"
 
 FROG_FFMPEG = '<%= @ffmpeg_exe %>'
 FROG_SITE_URL = '<%= @url %>'
-MEDIA_URL = '<%= @media_url %>'
+MEDIA_URL = '<%= @media_path %>'
 MEDIA_ROOT = '<%= @media_root %>'
 
-STATIC_URL = '<%= @static_url %>'
+STATIC_URL = '<%= @static_path %>'
 STATIC_ROOT = '<%= @static_root %>'
 
 AUTHENTICATION_BACKENDS = ('frog.auth.SimpleAuthBackend',)

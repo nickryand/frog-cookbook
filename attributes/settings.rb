@@ -28,14 +28,23 @@
 #
 # Base URL for the Frog application
 #
-default['frog']['settings']['url'] = "http://#{node['fqdn']}:8000"
+default['frog']['settings']['url'] = "http://#{node['fqdn']}"
+
+#
+# Frog site url port
+#
+# The url and port settings are used to generate URL's throughout
+# the Frog site. If you are using a reverse proxy for the entire
+# Frog application, this should be the listening port of that proxy
+#
+default['frog']['settings']['port'] = 8000
 
 #
 # Media URL used to serve dynamic content. Uploaded pictures are
-# served from this URL. Currently some static content is served
-# from this URL as well.
+# served from this path. Currently some static content is served
+# from this path as well.
 #
-default['frog']['settings']['media_url'] = "http://#{node['fqdn']}:8000/media/"
+default['frog']['settings']['media_path'] = "/media/"
 
 #
 # Directory for on-disk media storage. Picture and video uploads
@@ -44,9 +53,9 @@ default['frog']['settings']['media_url'] = "http://#{node['fqdn']}:8000/media/"
 default['frog']['settings']['media_root'] = '/srv/frog/media'
 
 #
-# URL for serving static assets
+# URL path for serving static assets
 #
-default['frog']['settings']['static_url'] = "http://#{node['fqdn']}:8000/static/"
+default['frog']['settings']['static_path'] = "/static/"
 
 #
 # Directory location for static content
