@@ -101,7 +101,7 @@ describe file('/srv/frog/webapp/webapp/settings.py') do
   its(:content) { should match(/'HOST': 'localhost'/) }
   its(:content) { should match(/'PORT': [0-9]*/) }
   its(:content) { should match(%r{FROG_FFMPEG = '/usr/bin/ffmpeg'}) }
-  its(:content) { should match(%r{FROG_SITE_URL = 'http://localhost:8000/'}) }
+  its(:content) { should match(%r{FROG_SITE_URL = 'http://localhost:8000'}) }
   its(:content) { should match(%r{MEDIA_ROOT = '/srv/frog/media'}) }
   its(:content) { should match(%r{MEDIA_URL = 'http://localhost:8000/media/'}) }
   its(:content) { should match(%r{STATIC_ROOT = '/srv/frog/static'}) }

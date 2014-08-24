@@ -33,6 +33,8 @@ describe 'frog::_packages' do
       expect(chef_run).to install_package('libjpeg-turbo-devel')
       expect(chef_run).to install_package('libtiff-devel')
       expect(chef_run).to install_package('libpng-devel')
+      expect(chef_run).to install_package('mysql')
+      expect(chef_run).to install_package('mysql-devel')
     end
   end
 
@@ -66,6 +68,8 @@ describe 'frog::_packages' do
       expect(chef_run).to install_package('libjpeg-turbo-devel')
       expect(chef_run).to install_package('libtiff-devel')
       expect(chef_run).to install_package('libpng-devel')
+      expect(chef_run).to install_package('mysql')
+      expect(chef_run).to install_package('mysql-devel')
     end
   end
 
@@ -109,6 +113,7 @@ describe 'frog::_packages' do
       expect(chef_run).to install_package('libjpeg-dev')
       expect(chef_run).to install_package('libtiff4-dev')
       expect(chef_run).to install_package('libpng12-dev')
+      expect(chef_run).to install_package('libmysqlclient-dev')
     end
   end
 
