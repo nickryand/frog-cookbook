@@ -26,4 +26,10 @@ describe 'generate_url' do
     url = generate_url('http://localhost', nil, '/static/')
     expect(url).to eq('http://localhost/static/')
   end
+
+  it 'returns a properly formatted url when port is passed as a string' do
+    url = generate_url('http://localhost', '80', '/static/')
+    expect(url).to eq('http://localhost/static/')
+  end
+
 end

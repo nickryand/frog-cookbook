@@ -1,3 +1,8 @@
+## 1.0.3 /2014-08-24
+
+Added an int cast to the port argument for the generate_url() function unless
+the port argument is nil.
+
 ## 1.0.2 /2014-08-23
 
 Updates to allow running the database on another server. ([@nickryand[])
