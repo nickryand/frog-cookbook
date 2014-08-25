@@ -30,14 +30,16 @@ template node['nginx']['dir'] + '/sites-available/frog' do
   owner 'root'
   group 'root'
   mode 00644
-  variables lazy{{
-    :listen_port => node['frog']['nginx']['listen_port'],
-    :server_name => node['frog']['nginx']['server_name'],
-    :access_log => node['nginx']['log_dir'] + '/frog-access.log',
-    :media_root => node['frog']['settings']['media_root'],
-    :static_root => node['frog']['settings']['static_root'],
-    :url => generate_url(node['frog']['settings']['url'], 8000)
-  }}
+  variables lazy {
+    {
+      :listen_port => node['frog']['nginx']['listen_port'],
+      :server_name => node['frog']['nginx']['server_name'],
+      :access_log => node['nginx']['log_dir'] + '/frog-access.log',
+      :media_root => node['frog']['settings']['media_root'],
+      :static_root => node['frog']['settings']['static_root'],
+      :url => generate_url(node['frog']['settings']['url'], 8000)
+    }
+  }
   notifies :reload, 'service[nginx]', :delayed
 end
 

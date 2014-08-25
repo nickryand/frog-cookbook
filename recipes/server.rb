@@ -135,32 +135,34 @@ template "#{node['frog']['rootdir']}/webapp/webapp/settings.py" do
   owner node['frog']['user']
   group node['frog']['group']
   mode 0600
-  variables lazy{{
-    :db_adapter => node['frog']['db']['adapter'],
-    :db_name => node['frog']['db']['name'],
-    :db_user => node['frog']['db']['user'],
-    :db_password => node['frog']['db']['password'],
-    :db_host => node['frog']['db']['host'],
-    :db_port => node['frog']['db']['port'],
-    :allowed_hosts => node['frog']['settings']['allowed_hosts'],
-    :ffmpeg_exe => node['frog']['settings']['ffmpeg_exe'],
-    :url => generate_url(node['frog']['settings']['url'], node['frog']['settings']['port']),
-    :media_path => generate_url(
-      node['frog']['settings']['url'],
-      node['frog']['settings']['port'],
-      node['frog']['settings']['media_path']
-    ),
-    :media_root => node['frog']['settings']['media_root'],
-    :static_path => generate_url(
-      node['frog']['settings']['url'],
-      node['frog']['settings']['port'],
-      node['frog']['settings']['static_path']
-    ),
-    :static_root => node['frog']['settings']['static_root'],
-    :session_age => node['frog']['settings']['session_age'],
-    :secret_key => node['frog']['settings']['secret_key'],
-    :debug => node['frog']['settings']['debug']
-  }}
+  variables lazy {
+    {
+      :db_adapter => node['frog']['db']['adapter'],
+      :db_name => node['frog']['db']['name'],
+      :db_user => node['frog']['db']['user'],
+      :db_password => node['frog']['db']['password'],
+      :db_host => node['frog']['db']['host'],
+      :db_port => node['frog']['db']['port'],
+      :allowed_hosts => node['frog']['settings']['allowed_hosts'],
+      :ffmpeg_exe => node['frog']['settings']['ffmpeg_exe'],
+      :url => generate_url(node['frog']['settings']['url'], node['frog']['settings']['port']),
+      :media_path => generate_url(
+        node['frog']['settings']['url'],
+        node['frog']['settings']['port'],
+        node['frog']['settings']['media_path']
+        ),
+      :media_root => node['frog']['settings']['media_root'],
+      :static_path => generate_url(
+        node['frog']['settings']['url'],
+        node['frog']['settings']['port'],
+        node['frog']['settings']['static_path']
+        ),
+      :static_root => node['frog']['settings']['static_root'],
+      :session_age => node['frog']['settings']['session_age'],
+      :secret_key => node['frog']['settings']['secret_key'],
+      :debug => node['frog']['settings']['debug']
+    }
+  }
   notifies :restart, 'runit_service[gunicorn]', :delayed
 end
 
