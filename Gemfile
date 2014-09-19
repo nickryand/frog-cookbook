@@ -4,8 +4,9 @@ gem 'berkshelf'
 gem 'emeril'
 
 group :style do
-  gem 'rubocop', '~> 0.24'
-  gem 'foodcritic', '~> 3.0'
+  gem 'rake', '~> 10.3'
+  gem 'rubocop', '~> 0.26'
+  gem 'foodcritic', '~> 4.0'
 end
 
 group :test do

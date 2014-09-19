@@ -1,9 +1,9 @@
 AllCops:
   Exclude:
-    - vendor/**
-    - tmp/**
-    - cookbooks/**
-    - bin/**
+    - vendor/**/*
+    - tmp/**/*
+    - cookbooks/**/*
+    - bin/**/*
 
 AlignParameters:
   Enabled: false
