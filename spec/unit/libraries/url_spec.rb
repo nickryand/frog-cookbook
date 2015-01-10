@@ -31,5 +31,4 @@ describe 'generate_url' do
     url = generate_url('http://localhost', '80', '/static/')
     expect(url).to eq('http://localhost/static/')
   end
-
 end

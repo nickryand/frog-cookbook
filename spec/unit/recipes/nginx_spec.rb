@@ -12,7 +12,6 @@ describe 'frog::nginx' do
       node.set['nginx']['dir'] = nginx_home
       node.set['frog']['nginx']['server_name'] = server_name
       node.set['frog']['settings']['url'] = frog_url
-
     end.converge(described_recipe)
   end
 

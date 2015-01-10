@@ -15,5 +15,4 @@ describe 'frog::default' do
     expect(chef_run).to include_recipe('frog::server')
     expect(chef_run).to include_recipe('frog::nginx')
   end
-
 end

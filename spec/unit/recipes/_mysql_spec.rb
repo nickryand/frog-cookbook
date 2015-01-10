@@ -63,5 +63,4 @@ describe 'frog::_mysql' do
         .with_privileges([:select, :update, :insert, :delete, :alter, :create, :index])
     end
   end
-
 end
