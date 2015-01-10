@@ -6,11 +6,11 @@ description 'Installs and configures the Frog Media Server'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '1.0.4'
 
-depends 'database', '~> 2.2.0'
+depends 'database', '~> 2.3.1'
 depends 'python', '~> 1.4.6'
 depends 'openssl', '~> 1.1.0'
 depends 'runit', '~> 1.5.10'
-depends 'mysql', '~> 5.3.6'
+depends 'mysql', '~> 5.6.1'
 depends 'gunicorn', '~> 1.1.6'
 depends 'nginx', '~> 2.7.4'
 depends 'chef-sugar', '~> 2.0.0'
