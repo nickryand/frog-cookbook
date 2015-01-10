@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe 'frog::database' do
   context 'using mysql' do
     cached(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.set['frog']['db']['dbms'] = 'mysql'
       end.converge(described_recipe)
     end

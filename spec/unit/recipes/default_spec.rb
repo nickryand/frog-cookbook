@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe 'frog::default' do
   cached(:chef_run) do
-    ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe)
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe)
   end
 
   before do

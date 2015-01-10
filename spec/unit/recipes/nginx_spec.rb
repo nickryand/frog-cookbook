@@ -8,7 +8,7 @@ describe 'frog::nginx' do
   let(:frog_url)     { 'http://localhost' }
 
   cached(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
       node.set['nginx']['dir'] = nginx_home
       node.set['frog']['nginx']['server_name'] = server_name
       node.set['frog']['settings']['url'] = frog_url

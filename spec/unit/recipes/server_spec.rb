@@ -16,7 +16,7 @@ describe 'frog::server' do
   let(:frog_static_path)   { "/static" }
 
   cached(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
       node.set['frog']['group'] = frog_group
       node.set['frog']['user'] = frog_user
       node.set['frog']['rootdir'] = frog_home

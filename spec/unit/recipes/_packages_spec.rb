@@ -10,7 +10,7 @@ describe 'frog::_packages' do
 
   context 'using redhat' do
     cached(:chef_run) do
-      ChefSpec::Runner.new(platform: 'redhat', version: '6.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'redhat', version: '6.4') do |node|
         node.set['frog']['yum']['dag']['url'] = dag_url
         node.set['frog']['yum']['dag']['gpgkey'] = dag_gpg
       end.converge(described_recipe)
@@ -40,7 +40,7 @@ describe 'frog::_packages' do
 
   context 'using amazon linux' do
     cached(:chef_run) do
-      ChefSpec::Runner.new(platform: 'amazon', version: '2014.03') do |node|
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2014.03') do |node|
         node.set['frog']['yum']['dag']['url'] = dag_url
         node.set['frog']['yum']['dag']['gpgkey'] = dag_gpg
         node.set['frog']['yum']['centos']['url'] = centos_url
@@ -75,7 +75,7 @@ describe 'frog::_packages' do
 
   context 'using ubuntu after precise' do
     cached(:chef_run) do
-      ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04') do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.set['frog']['apt']['ffmpeg']['url'] = ffmpeg_url
         node.set['frog']['apt']['ffmpeg']['key'] = ffmpeg_key
       end.converge(described_recipe)
@@ -100,7 +100,7 @@ describe 'frog::_packages' do
 
   context 'using ubuntu precise' do
     cached(:chef_run) do
-      ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04')
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
         .converge(described_recipe)
     end
 
@@ -119,7 +119,7 @@ describe 'frog::_packages' do
 
   context 'using unsupported platform' do
     cached(:chef_run) do
-      ChefSpec::Runner.new(platform: 'mac_os_x', version: '10.8.2')
+      ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.8.2')
         .converge(described_recipe)
     end
 

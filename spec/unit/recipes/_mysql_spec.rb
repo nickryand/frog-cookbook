@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe 'frog::_mysql' do
   context 'no dbms install' do
     cached(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.set['frog']['db']['install_dbms'] = false
       end.converge(described_recipe)
     end
@@ -15,7 +15,7 @@ describe 'frog::_mysql' do
 
   context 'dbms install' do
     cached(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.set['frog']['db']['install_dbms'] = true
       end.converge(described_recipe)
     end
@@ -36,7 +36,7 @@ describe 'frog::_mysql' do
     let(:conn_hash) { { host: host, username: 'root', password: mysql_password } }
 
     cached(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.set['frog']['db']['host'] = host
         node.set['frog']['db']['name'] = db_name
         node.set['frog']['db']['user'] = username
