@@ -9,7 +9,7 @@ describe 'frog::_mysql' do
     end
 
     it 'should not attempt to install mysql server' do
-      expect(chef_run).not_to include_recipe('mysql::server')
+      expect(chef_run).not_to create_mysql_service('default')
     end
   end
 
@@ -21,7 +21,7 @@ describe 'frog::_mysql' do
     end
 
     it 'should not attempt to install mysql server' do
-      expect(chef_run).to include_recipe('mysql::server')
+      expect(chef_run).to create_mysql_service('default')
     end
   end
 
@@ -42,8 +42,12 @@ describe 'frog::_mysql' do
         node.set['frog']['db']['user'] = username
         node.set['frog']['db']['password'] = password
         node.set['frog']['db']['from_host'] = from_host
-        node.set['mysql']['server_root_password'] = mysql_password
+        node.set['frog']['db']['server_root_password'] = mysql_password
       end.converge(described_recipe)
+    end
+
+    it 'should install the mysql2 chef gem' do
+      expect(chef_run).to install_mysql2_chef_gem('default')
     end
 
     it 'should setup the proper database' do

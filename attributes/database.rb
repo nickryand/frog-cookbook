@@ -42,6 +42,11 @@ default['frog']['db']['dbms'] = 'mysql'
 default['frog']['db']['install_dbms'] = false
 
 #
+# Database Server root account password
+#
+default['frog']['db']['server_root_password'] = 'MustCh@ng3M3'
+
+#
 # The Django database adapter to configure
 #
 default['frog']['db']['adapter'] = 'mysql'

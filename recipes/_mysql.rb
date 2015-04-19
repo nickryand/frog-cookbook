@@ -24,15 +24,26 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-include_recipe 'mysql::server' if node['frog']['db']['install_dbms']
-
 include_recipe 'build-essential'
-include_recipe 'database::mysql'
+
+if node['frog']['db']['install_dbms']
+  mysql_service 'default' do
+    port '3306'
+    version '5.5'
+    initial_root_password node['frog']['db']['server_root_password']
+    action [:create, :start]
+  end
+end
+
+# Install the mysql client
+mysql2_chef_gem 'default' do
+  action :install
+end
 
 conn = {
   :host => node['frog']['db']['host'],
   :username => 'root',
-  :password => node['mysql']['server_root_password']
+  :password => node['frog']['db']['server_root_password']
 }
 
 mysql_database node['frog']['db']['name'] do
