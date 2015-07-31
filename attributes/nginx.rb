@@ -26,11 +26,6 @@
 #
 
 #
-# Port number for Nginx to listen for incoming requests
-#
-default['frog']['nginx']['listen_port'] = 80
-
-#
 # Nginx server name directive that is used to select the proper
 # server block.
 #

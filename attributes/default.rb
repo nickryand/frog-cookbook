@@ -31,7 +31,7 @@
 #
 # https://pypi.python.org/pypi/django-frog
 #
-default['frog']['version'] = '1.0.3'
+default['frog']['version'] = '1.0.8'
 
 #
 # Directory in which to create the Django project and virtual

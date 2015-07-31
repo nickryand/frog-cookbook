@@ -24,15 +24,16 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+include_recipe 'chef-sugar::default'
 include_recipe 'build-essential'
+include_recipe 'selinux::disabled' if (rhel? && node['frog']['db']['install_dbms'])
 
-if node['frog']['db']['install_dbms']
-  mysql_service 'default' do
-    port '3306'
-    version '5.5'
-    initial_root_password node['frog']['db']['server_root_password']
-    action [:create, :start]
-  end
+mysql_service 'default' do
+  port '3306'
+  version '5.6'
+  initial_root_password node['frog']['db']['server_root_password']
+  action [:create, :start]
+  only_if { node['frog']['db']['install_dbms'] }
 end
 
 # Install the mysql client

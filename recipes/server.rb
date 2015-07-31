@@ -26,6 +26,7 @@
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 include_recipe 'python'
 include_recipe 'chef-sugar'
+include_recipe 'runit'
 
 package 'git'
 include_recipe 'frog::_packages'
@@ -59,6 +60,7 @@ directory install_dir do
 end
 
 python_virtualenv install_dir do
+  interpretor 'python2.7'
   action :create
 end
 
@@ -195,7 +197,6 @@ execute 'frog_initial_setup' do
   not_if "#{node['frog']['rootdir']}/env/bin/python manage.py list_users | grep #{node['frog']['admin']['user']}", :cwd => "#{node['frog']['rootdir']}/webapp"
 end
 
-include_recipe 'runit'
 runit_service 'gunicorn' do
   default_logger true
 end

@@ -69,7 +69,7 @@ default['frog']['db']['password'] = 'thisshouldbechanged'
 #
 # Hostname or IP that is hosting the Frog database
 #
-default['frog']['db']['host'] = 'localhost'
+default['frog']['db']['host'] = '127.0.0.1'
 
 #
 # Port the database server is listening on

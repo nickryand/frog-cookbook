@@ -25,6 +25,24 @@ describe 'frog::_mysql' do
     end
   end
 
+  context 'rhel' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.6') do |node|
+        node.set['frog']['db']['install_dbms'] = true
+      end.converge(described_recipe)
+    end
+
+    it 'disable selinux so mysql daemon can run' do
+      expect(chef_run).to include_recipe('selinux::disabled')
+    end
+
+    it 'does not disable selinux when no server is being installed' do
+      chef_run.node.set['frog']['db']['install_dbms'] = false
+      chef_run.converge(described_recipe)
+      expect(chef_run).to_not include_recipe('selinux::disabled')
+    end
+  end
+
   context 'default run' do
     let(:host)           { '192.168.1.1' }
     let(:from_host)      { '192.168.1.2' }
@@ -43,7 +61,15 @@ describe 'frog::_mysql' do
         node.set['frog']['db']['password'] = password
         node.set['frog']['db']['from_host'] = from_host
         node.set['frog']['db']['server_root_password'] = mysql_password
+        node.set['frog']['db']['install_dbms'] = true
       end.converge(described_recipe)
+    end
+
+    it 'should create the mysql service' do
+      expect(chef_run).to create_mysql_service('default')
+        .with_port('3306')
+        .with_version('5.6')
+        .with_initial_root_password(mysql_password)
     end
 
     it 'should install the mysql2 chef gem' do

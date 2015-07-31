@@ -1,14 +1,4 @@
-require 'serverspec'
-
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
-
-RSpec.configure do |c|
-  c.before :all do
-    c.os = backend(Serverspec::Commands::Base).check_os
-    c.path = '/sbin:/usr/sbin'
-  end
-end
+require_relative '../../../kitchen/data/spec_helper'
 
 describe file('/srv/frog/webapp/webapp/settings.py') do
   it { should be_owned_by 'frog' }

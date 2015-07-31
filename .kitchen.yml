@@ -7,16 +7,13 @@ driver:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: latest
+  require_chef_omnibus: true
+  data_path: test/shared
 
 platforms:
   - name: ubuntu-14.04
     run_list:
       - recipe[apt]
-  - name: ubuntu-12.04
-    run_list:
-      - recipe[apt]
-  - name: centos-6.4
 
 suites:
   - name: smoke_tests
@@ -33,7 +30,7 @@ suites:
           install_dbms: true
         debug: True
         settings:
-          port: 80
+          port: 8080
           url: 'http://localhost'
           media_path: '/media/'
           static_path: '/static/'
@@ -83,4 +80,4 @@ suites:
         db:
           password: frogadmin
           host: <%= ENV['AWS_RDS_HOST'] %>
-    excludes: ["ubuntu-14.04", "ubuntu-12.04", "centos-6.4"]
+    excludes: ["ubuntu-14.04"]

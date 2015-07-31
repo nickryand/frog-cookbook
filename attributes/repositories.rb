@@ -64,9 +64,9 @@ default['frog']['yum']['centos']['gpgkey'] = 'http://mirror.centos.org/centos/RP
 # Frog currently only supports ffmpeg so we add an ffmpeg apt
 # repository.
 #
-default['frog']['apt']['ffmpeg']['url'] = 'http://ppa.launchpad.net/jon-severinsson/ffmpeg/ubuntu'
+default['frog']['apt']['ffmpeg']['url'] = 'http://ppa.launchpad.net/kirillshkrogalev/ffmpeg-next/ubuntu'
 
 #
 # URL or Fingerprint for the repository GPG key
 #
-default['frog']['apt']['ffmpeg']['key'] = 'CFCA9579'
+default['frog']['apt']['ffmpeg']['key'] = '8EFE5982'

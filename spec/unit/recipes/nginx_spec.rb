@@ -6,12 +6,14 @@ describe 'frog::nginx' do
   let(:server_name)  { 'test.local' }
   let(:nginx_log)    { '/var/log/nginx' }
   let(:frog_url)     { 'http://localhost' }
+  let(:frog_port)    { 8080 }
 
   cached(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
       node.set['nginx']['dir'] = nginx_home
       node.set['frog']['nginx']['server_name'] = server_name
       node.set['frog']['settings']['url'] = frog_url
+      node.set['frog']['settings']['port'] = frog_port
     end.converge(described_recipe)
   end
 
@@ -29,7 +31,7 @@ describe 'frog::nginx' do
       .with_group('root')
       .with_mode(00644)
       .with_variables(
-        :listen_port => 80,
+        :listen_port => frog_port,
         :server_name => server_name,
         :access_log => '/var/log/nginx/frog-access.log',
         :media_root => '/srv/frog/media',

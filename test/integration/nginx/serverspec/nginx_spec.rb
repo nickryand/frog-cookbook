@@ -1,14 +1,4 @@
-require 'serverspec'
-
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
-
-RSpec.configure do |c|
-  c.before :all do
-    c.os = backend(Serverspec::Commands::Base).check_os
-    c.path = '/sbin:/usr/sbin'
-  end
-end
+require_relative '../../../kitchen/data/spec_helper'
 
 describe package('nginx') do
   it { should be_installed }
@@ -18,13 +8,13 @@ describe process("nginx") do
   it { should be_running }
 end
 
-describe port(80) do
+describe port(8080) do
   it { should be_listening.with('tcp') }
 end
 
 describe file('/etc/nginx/sites-enabled/frog') do
   it { should be_linked_to '/etc/nginx/sites-available/frog' }
-  its(:content) { should match(/listen.*80;/) }
+  its(:content) { should match(/listen.*8080;/) }
   its(:content) { should match(/server_name\s+localhost/) }
   its(:content) { should match(%r{access_log.*/var/log/nginx/frog-access.log}) }
   its(:content) { should match(%r{alias /srv/frog/media;}) }

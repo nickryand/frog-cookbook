@@ -32,7 +32,7 @@ template node['nginx']['dir'] + '/sites-available/frog' do
   mode 00644
   variables lazy {
     {
-      :listen_port => node['frog']['nginx']['listen_port'],
+      :listen_port => node['frog']['settings']['port'],
       :server_name => node['frog']['nginx']['server_name'],
       :access_log => node['nginx']['log_dir'] + '/frog-access.log',
       :media_root => node['frog']['settings']['media_root'],

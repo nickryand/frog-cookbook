@@ -1,14 +1,4 @@
-require 'serverspec'
-
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
-
-RSpec.configure do |c|
-  c.before :all do
-    c.os = backend(Serverspec::Commands::Base).check_os
-    c.path = '/sbin:/usr/sbin'
-  end
-end
+require_relative '../../../kitchen/data/spec_helper'
 
 # Arch specific packages
 dev_packages = case os[:family]
@@ -101,11 +91,11 @@ describe file('/srv/frog/webapp/webapp/settings.py') do
   its(:content) { should match(/'HOST': 'localhost'/) }
   its(:content) { should match(/'PORT': [0-9]*/) }
   its(:content) { should match(%r{FROG_FFMPEG = '/usr/bin/ffmpeg'}) }
-  its(:content) { should match(%r{FROG_SITE_URL = 'http://localhost:8000'}) }
+  its(:content) { should match(%r{FROG_SITE_URL = 'http://localhost:8080'}) }
   its(:content) { should match(%r{MEDIA_ROOT = '/srv/frog/media'}) }
-  its(:content) { should match(%r{MEDIA_URL = 'http://localhost:8000/media/'}) }
+  its(:content) { should match(%r{MEDIA_URL = 'http://localhost:8080/media/'}) }
   its(:content) { should match(%r{STATIC_ROOT = '/srv/frog/static'}) }
-  its(:content) { should match(%r{STATIC_URL = 'http://localhost:8000/static/'}) }
+  its(:content) { should match(%r{STATIC_URL = 'http://localhost:8080/static/'}) }
   its(:content) { should match(/SESSION_COOKIE_AGE = [0-9]+/) }
 end
 
